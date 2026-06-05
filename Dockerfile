@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy Python packages from base stage
 COPY --from=base /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=base /usr/local/bin /usr/local/bin
 COPY --from=base /app /app
 
 # Create non-root user for security
