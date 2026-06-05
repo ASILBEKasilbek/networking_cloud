@@ -1,0 +1,46 @@
+# Core Django
+Django==5.0.6
+djangorestframework==3.15.0
+django-cors-headers==4.3.1
+django-environ==0.11.2
+django-filter==24.1
+django-extensions==3.2.3
+
+# Database
+psycopg2-binary==2.9.9
+
+# Authentication & Security
+djangorestframework-simplejwt==5.3.2
+django-rest-auth==0.9.5
+python-decouple==3.8
+
+# Celery & Background Tasks
+celery==5.4.0
+redis==5.0.1
+
+# API & Serialization
+PyYAML==6.0.1
+python-dateutil==2.8.2
+
+# Caching & Performance
+django-cacheops==7.0.1
+requests==2.31.0
+
+# Production Server
+gunicorn==21.2.0
+
+# Monitoring & Logging
+python-json-logger==2.0.7
+
+# Development
+black==24.4.2
+flake8==7.0.0
+isort==5.13.2
+pytest==7.4.3
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
+
+# Utilities
+pytz==2024.1
+six==1.16.0
