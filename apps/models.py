@@ -49,6 +49,7 @@ class Customer(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'customers'
         verbose_name = 'Customer'
         verbose_name_plural = 'Customers'
         ordering = ['name']
@@ -73,6 +74,7 @@ class Contact(BaseModel):
     is_primary = models.BooleanField(default=False)
     
     class Meta:
+        app_label = 'customers'
         verbose_name = 'Contact'
         verbose_name_plural = 'Contacts'
         ordering = ['-is_primary', 'name']
@@ -93,6 +95,7 @@ class Category(BaseModel):
     is_featured = models.BooleanField(default=False)
     
     class Meta:
+        app_label = 'products'
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
         ordering = ['name']
@@ -135,6 +138,7 @@ class Product(BaseModel):
     attributes = models.JSONField(default=dict, blank=True)  # e.g., color, size, brand
     
     class Meta:
+        app_label = 'products'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         ordering = ['sku']
@@ -196,6 +200,7 @@ class Order(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'orders'
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
         ordering = ['-order_date']
@@ -225,6 +230,7 @@ class OrderItem(BaseModel):
     tax_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
     class Meta:
+        app_label = 'orders'
         verbose_name = 'Order Item'
         verbose_name_plural = 'Order Items'
         unique_together = ['order', 'product']
@@ -259,6 +265,7 @@ class StockMovement(BaseModel):
     created_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     
     class Meta:
+        app_label = 'inventory'
         verbose_name = 'Stock Movement'
         verbose_name_plural = 'Stock Movements'
         ordering = ['-created_at']
@@ -318,6 +325,7 @@ class Lead(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'crm'
         verbose_name = 'Lead'
         verbose_name_plural = 'Leads'
         ordering = ['-created_at']
@@ -346,6 +354,7 @@ class Interaction(BaseModel):
     created_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     
     class Meta:
+        app_label = 'crm'
         verbose_name = 'Interaction'
         verbose_name_plural = 'Interactions'
         ordering = ['-interaction_date']
@@ -386,6 +395,7 @@ class Supplier(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'erp'
         verbose_name = 'Supplier'
         verbose_name_plural = 'Suppliers'
         ordering = ['name']
@@ -412,7 +422,7 @@ class PurchaseOrder(BaseModel):
     
     # Status
     status = models.CharField(
-        max_digits=20,
+        max_length=20,
         choices=[
             ('draft', 'Draft'),
             ('sent', 'Sent'),
@@ -428,6 +438,7 @@ class PurchaseOrder(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'erp'
         verbose_name = 'Purchase Order'
         verbose_name_plural = 'Purchase Orders'
         ordering = ['-po_date']
@@ -458,6 +469,7 @@ class Warehouse(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'wms'
         verbose_name = 'Warehouse'
         verbose_name_plural = 'Warehouses'
         ordering = ['name']
@@ -490,6 +502,7 @@ class PickList(BaseModel):
     notes = models.TextField(blank=True)
     
     class Meta:
+        app_label = 'wms'
         verbose_name = 'Pick List'
         verbose_name_plural = 'Pick Lists'
         ordering = ['-created_at']
