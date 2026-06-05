@@ -67,9 +67,7 @@ Thumbs.db
 .DS_Store
 *.pid
 
-# Docker
-.dockerignore
-Dockerfile
+# Docker (keep for reference)
 
 # Cache
 .cache/
