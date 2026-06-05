@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'django_extensions',
+    'django_celery_beat',
 
     # Local apps
     'apps.core',
