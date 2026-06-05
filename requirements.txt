@@ -44,3 +44,4 @@ factory-boy==3.3.0
 # Utilities
 pytz==2024.1
 six==1.16.0
+Pillow==10.3.0
