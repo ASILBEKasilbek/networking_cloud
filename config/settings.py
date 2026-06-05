@@ -28,6 +28,14 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 if isinstance(ALLOWED_HOSTS, str):
     ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS.split(',')]
 
+# CSRF Trusted Origins (for subdomain access)
+CSRF_TRUSTED_ORIGINS = [
+    'http://13.213.12.202',
+    'http://admin.13.213.12.202',
+    'http://dashboard.13.213.12.202',
+    'http://portal.13.213.12.202',
+]
+
 # Application definition
 INSTALLED_APPS = [
     # Django apps
