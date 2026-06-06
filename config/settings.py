@@ -31,9 +31,10 @@ if isinstance(ALLOWED_HOSTS, str):
 # CSRF Trusted Origins (for subdomain access)
 CSRF_TRUSTED_ORIGINS = [
     'http://13.213.12.202',
-    'http://admin.13.213.12.202',
-    'http://dashboard.13.213.12.202',
-    'http://portal.13.213.12.202',
+    'http://networking.asilbek.tech',
+    'http://admin.asilbek.tech',
+    'http://dashboard.asilbek.tech',
+    'http://portal.asilbek.tech',
 ]
 
 # Application definition

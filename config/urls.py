@@ -9,6 +9,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
+# Frontend views
+from apps.core.views import login_view, dashboard_view, logout_view
+
 @require_http_methods(["GET"])
 def health_check(request):
     """Health check endpoint for load balancer."""
@@ -46,6 +49,11 @@ router.register(r'warehouses', WarehouseViewSet, basename='warehouse')
 router.register(r'pick-lists', PickListViewSet, basename='pick-list')
 
 urlpatterns = [
+    # Frontend pages
+    path('', login_view, name='login'),
+    path('dashboard/', dashboard_view, name='dashboard'),
+    path('logout/', logout_view, name='logout'),
+
     # Admin
     path('admin/', admin.site.urls),
 
@@ -70,7 +78,6 @@ urlpatterns = [
     path('api/v1/wms/', include('apps.wms.urls')),
 ]
 
-# Serve media files in development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Serve media and static files
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
