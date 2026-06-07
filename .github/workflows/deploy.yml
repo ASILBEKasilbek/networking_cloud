@@ -25,4 +25,4 @@ jobs:
         run: ssh ubuntu@13.213.12.202 'cd /home/ubuntu/networking_cloud && git pull origin main && sudo docker compose up -d --build && sleep 20 && sudo docker exec wholesale_app python manage.py migrate --noinput && sudo docker exec wholesale_app python manage.py collectstatic --noinput && sudo docker exec wholesale_app python manage.py create_demo_users'
 
       - name: Health Check
-        run: curl -sf http://13.213.12.202:8001/health/
+        run: curl -sf http://networking.asilbek.tech/health/
