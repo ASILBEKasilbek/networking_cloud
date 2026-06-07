@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import os
+import socket
+import time
+import uuid
 
 
 def login_view(request):
@@ -19,7 +23,7 @@ def login_view(request):
         else:
             error = "Noto'g'ri foydalanuvchi nomi yoki parol"
 
-    return render(request, 'login.html', {'error': error})
+    return render(request, 'login.html', {'error': error, 'lb_info': get_lb_info()})
 
 
 @login_required(login_url='/')
@@ -82,8 +86,32 @@ def dashboard_view(request):
         'role': role,
         'role_display': role_display_map.get(role, 'User'),
         'stats': stats_map.get(role, stats_map['customer']),
+        'lb_info': get_lb_info(),
     }
     return render(request, 'dashboard.html', context)
+
+
+def get_lb_info():
+    """Get load balancing and server info."""
+    start = time.time()
+    hostname = socket.gethostname()
+    container_id = hostname[:12]
+    try:
+        server_ip = socket.gethostbyname(hostname)
+    except socket.gaierror:
+        server_ip = '172.x.x.x'
+    response_time = round((time.time() - start) * 1000, 2)
+
+    return {
+        'hostname': hostname,
+        'worker_pid': os.getpid(),
+        'container_id': container_id,
+        'server_ip': server_ip,
+        'workers': 4,
+        'request_id': str(uuid.uuid4())[:8],
+        'response_time': response_time,
+        'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+    }
 
 
 def logout_view(request):

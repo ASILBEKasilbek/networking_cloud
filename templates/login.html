@@ -81,7 +81,14 @@
                     <div class="mt-3">
                         <small><i class="fas fa-shield-halved me-1"></i> Xavfsiz kirish</small><br>
                         <small><i class="fas fa-users me-1"></i> Rolga asoslangan boshqaruv</small><br>
-                        <small><i class="fas fa-chart-line me-1"></i> Real-time analytics</small>
+                        <small><i class="fas fa-chart-line me-1"></i> Real-time analytics</small><br>
+                        <small><i class="fas fa-network-wired me-1"></i> Load Balanced ({{ lb_info.workers }} workers)</small>
+                    </div>
+                    <hr style="opacity:0.3">
+                    <div class="mt-2" style="font-size:0.72rem;opacity:0.7;">
+                        <i class="fas fa-server me-1"></i> Container: {{ lb_info.container_id }}<br>
+                        <i class="fas fa-microchip me-1"></i> Worker PID: {{ lb_info.worker_pid }}<br>
+                        <i class="fas fa-clock me-1"></i> {{ lb_info.timestamp }}
                     </div>
                 </div>
             </div>
