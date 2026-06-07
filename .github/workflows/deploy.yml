@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -20,25 +20,9 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@13.213.12.202 << 'DEPLOY'
-            echo "🚀 Starting deployment..."
-            cd /home/ubuntu/networking_cloud
-            
-            git pull origin main
-            
-            sudo docker compose up -d --build
-            
-            echo "⏳ Waiting for app..."
-            sleep 20
-            
-            sudo docker exec wholesale_app python manage.py migrate --noinput
-            sudo docker exec wholesale_app python manage.py collectstatic --noinput
-            sudo docker exec wholesale_app python manage.py create_demo_users
-            
-            if curl -sf http://localhost:8001/health/ > /dev/null; then
-              echo "✅ Deploy successful!"
-            else
-              echo "❌ Health check failed!"
-              exit 1
-            fi
-          DEPLOY
+          ssh -o StrictHostKeyChecking=no ubuntu@13.213.12.202 'cd /home/ubuntu/networking_cloud && git pull origin main && sudo docker compose up -d --build && sleep 20 && sudo docker exec wholesale_app python manage.py migrate --noinput && sudo docker exec wholesale_app python manage.py collectstatic --noinput && sudo docker exec wholesale_app python manage.py create_demo_users && echo DEPLOY_OK'
+
+      - name: Health Check
+        run: |
+          sleep 5
+          curl -sf http://13.213.12.202:8001/health/ && echo "Health OK"
