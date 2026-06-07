@@ -11,39 +11,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Production Server
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: 13.213.12.202
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          timeout: 60s
-          command_timeout: 10m
-          script: |
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 13.213.12.202 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.213.12.202 << 'DEPLOY'
             echo "🚀 Starting deployment..."
             cd /home/ubuntu/networking_cloud
             
-            # Pull latest code
             git pull origin main
             
-            # Rebuild and restart containers
             sudo docker compose up -d --build
             
-            # Wait for web container to be healthy
-            echo "⏳ Waiting for app to start..."
+            echo "⏳ Waiting for app..."
             sleep 20
             
-            # Run migrations and setup
             sudo docker exec wholesale_app python manage.py migrate --noinput
             sudo docker exec wholesale_app python manage.py collectstatic --noinput
             sudo docker exec wholesale_app python manage.py create_demo_users
             
-            # Verify deployment
             if curl -sf http://localhost:8001/health/ > /dev/null; then
-              echo "✅ Deployment successful! App is healthy."
+              echo "✅ Deploy successful!"
             else
               echo "❌ Health check failed!"
-              sudo docker compose logs web --tail=20
               exit 1
             fi
+          DEPLOY
